@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.social.UserIdSource;
 import org.springframework.social.security.SocialAuthenticationFilter;
@@ -99,5 +101,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected O2UserDetailsService userDetailsService() {
 		return userDetailsService;
+	}
+
+	@Bean
+	public TextEncryptor textEncryptor() {
+		return Encryptors.noOpText();
 	}
 }

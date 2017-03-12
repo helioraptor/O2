@@ -3,27 +3,36 @@ package uk.ac.ebi.ddi.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.social.UserIdSource;
 import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.*;
+import org.springframework.social.connect.mongo.*;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.orcid.api.OrcidApi;
 import org.springframework.social.orcid.connect.OrcidConnectionFactory;
 import org.springframework.social.orcid.utils.OrcidConfig;
 import org.springframework.social.orcid.utils.OrcidConfigBroker;
+import org.springframework.util.MultiValueMap;
 import uk.ac.ebi.ddi.security.Service.O2UserDetailsService;
 import uk.ac.ebi.ddi.security.repository.SimpleUsersConnectionRepository;
 import uk.ac.ebi.ddi.security.UserAuthenticationUserIdSource;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.social.connect.mongo.MongoConnectionService;
 
 @Configuration
 @EnableSocial
+@ComponentScan(basePackages = "org.springframework.social.connect.mongo")
 public class SocialConfig extends SocialConfigurerAdapter {
 
 	public SocialConfig() throws Exception{
@@ -46,6 +55,14 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	@Autowired
 	private O2UserDetailsService userDetailsService;
 
+	/*
+	@Autowired
+	private TextEncryptor textEncryptor;
+
+	@Autowired
+	private MongoConnectionService mongoConnectionService;
+	*/
+
 	@Override
 	public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
 		cfConfig.addConnectionFactory(new FacebookConnectionFactory(
@@ -65,6 +82,14 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
 	@Override
 	public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
+
+		/*
+		MongoUsersConnectionRepository mongoUsersConnectionRepository =
+				new MongoUsersConnectionRepository(mongoConnectionService, connectionFactoryLocator, textEncryptor);
+
+		return mongoUsersConnectionRepository;
+		*/
+
 		SimpleUsersConnectionRepository usersConnectionRepository =
 				new SimpleUsersConnectionRepository(userDetailsService, connectionFactoryLocator);
 

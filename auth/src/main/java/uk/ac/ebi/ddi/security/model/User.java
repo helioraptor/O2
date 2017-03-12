@@ -49,7 +49,7 @@ public class User implements SocialUserDetails {
 	@NotNull
 	private boolean accountEnabled;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
 	private Set<UserAuthority> authorities;
 
 	public Long getId() {
